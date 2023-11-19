@@ -3,7 +3,11 @@
   "version": "1.0.0-alpha.3",
   "description": "GitHub action for exporting figma components.",
   "scripts": {
-    "start": "node entrypoint.js format=png outputDir=./build/"
+    "start": "node entrypoint.js format=png outputDir=./build/",
+    "setup": "node createFolders.js format=png outputDir=./dist/ page='Page 1'",
+    "section": "node renderMustache.js outputDir=./dist, template=./jpg.template.md page='Page 1' section='Section 1'",
+    "frame": "node renderMustacheFrame.js outputDir=./build, template=./png.template.md frame='iPhone 14 & 15 Pro Max - 1'"
+
   },
   "repository": "https://github.com/primer/figma-action",
   "bugs": {
@@ -25,6 +29,7 @@
     "fs-extra": "^7.0.0",
     "got": "^8.3.0",
     "js-yaml": "^4.1.0",
+    "mustache": "^4.2.0",
     "p-queue": "^2.4.2",
     "sanitize-filename": "^1.6.3"
   }

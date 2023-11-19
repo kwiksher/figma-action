@@ -45,7 +45,7 @@ const fs   = require('fs');
 
 // Get document, or throw exception on error
 try {
-  const doc = yaml.load(fs.readFileSync('./frames.yml', 'utf8'));
+  const doc = yaml.load(fs.readFileSync(options.outputDir + '/frames.yml', 'utf8'));
   console.log(doc);
   for(const target of doc.frames ){
     exportFrame(target, doc);
@@ -64,7 +64,7 @@ function exportFrame(target, doc){
     .then(({ data }) => {
       console.log('Processing response')
       const components = {}
-      let isTargetFound = false;
+      //
       function check(c) {
         // if (c.type === 'COMPONENT') {
           if (c.hasOwnProperty('exportSettings') && c.exportSettings.length>0 ){
@@ -93,17 +93,41 @@ function exportFrame(target, doc){
             if (c.type == "CANVAS" && doc.page==c.name) {
               // eslint-disable-next-line github/array-foreach
               c.children.forEach(check)
-            }else if(c.type == "SECTION" && doc.section == c.name ){
+            } else if(c.type == "SECTION" && doc.section == c.name ){
               c.children.forEach(check)
-            }else if (c.type == "FRAME"  && target == c.name){
+            } else if (c.type == "FRAME"  && target == c.name){
               frame_x = c.absoluteBoundingBox.x;
               frame_y = c.absoluteBoundingBox.y;
-              isTargetFound = true;
-              c.children.forEach(check)
-              isTargetFound = false;
-            }else if (isTargetFound){
-              c.children.forEach(check)
+              c.children.forEach(parseForExportSettings)
             }
+        }
+      }
+
+      function parseForExportSettings(c) {
+        if (c.hasOwnProperty('exportSettings') && c.exportSettings.length>0 ){
+          const {name, id} = c
+          // const {description = '', key} = data.components[c.id]
+          const {width, height} = c.absoluteBoundingBox
+          const filename = `${sanitize(name).toLowerCase()}.${options.format}`;
+          const x = c.absoluteBoundingBox.x - frame_x;
+          const y = c.absoluteBoundingBox.y - frame_y;
+          if (options.format == c.exportSettings[0].format.toLowerCase()){
+            components[id] = {
+              name,
+              filename,
+              id,
+              // key,
+              file: fileId,
+              // description,
+              width,
+              height,
+              x,
+              y
+            }
+          }
+        }
+        if (c.children){
+          c.children.forEach(parseForExportSettings)
         }
       }
 
@@ -132,7 +156,8 @@ function exportFrame(target, doc){
     })
     .then(components => {
       return ensureDir(join(outputDir))
-        .then(() => writeFile(resolve(outputDir, `data.${options.format}.json`), JSON.stringify(components), 'utf8'))
+        // .then(() => writeFile(resolve(outputDir, `data.${options.format}.json`), JSON.stringify(components), 'utf8'))
+        .then(() => writeFile(resolve(outputDir, `data.${options.format}.json`), JSON.stringify(Object.values(components)), 'utf8'))
         .then(() => components)
     })
     .then(components => {
