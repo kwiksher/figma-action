@@ -1,9 +1,9 @@
 const options = {
-  frame:"Frame 1",
-  template: './png.template.md',
+  layer:"Frame 1",
+  template: './template.png.md',
   outputDir: './build',
 }
-for(const arg of process.argv.slice(3)) {
+for(const arg of process.argv.slice(2)) {
   const [param, value] = arg.split('=')
   console.log(param, value)
   if(options[param]) {
@@ -11,8 +11,8 @@ for(const arg of process.argv.slice(3)) {
   }
 }
 
-const data = options.outputDir + "/" + options.frame + "/data.png.json"
-const output = options.outputDir + "/" + options.frame + "/output.png.md"
+const data = options.outputDir + "/" + options.layer + "/data.png.json"
+const output = options.outputDir + "/" + options.layer + "/output.png.md"
 
 const Mustache = require('mustache');
 const fs = require('fs');
@@ -27,7 +27,7 @@ console.log(jsonData)
 const template = fs.readFileSync(options.template, 'utf8');
 
 // Render the Markdown template with the JSON data
-const renderedMarkdown = Mustache.render(template, {name:options.frame, data:jsonData});
+const renderedMarkdown = Mustache.render(template, {name:options.layer, data:jsonData});
 
 console.log(renderedMarkdown)
 // Write the rendered Markdown to a file

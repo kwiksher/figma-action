@@ -1,6 +1,6 @@
 {{#.}}
 # {{name}}
-|  first chidlren | Image | Id| second chidlren |Id|
+|  1st layer | Image | Id| 2nd layer |Id|
 | --- | --- | --- | --- |----|
 {{#children}}
 | {{name}}  | <img src='./{{parent}}/jpg/{{filename}}'> | {{id}} | ||

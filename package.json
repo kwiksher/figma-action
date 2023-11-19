@@ -3,15 +3,15 @@
   "version": "1.0.0-alpha.3",
   "description": "GitHub action for exporting figma components.",
   "scripts": {
-    "start": "node entrypoint.js format=png outputDir=./build/",
     "setup": "node createFolders.js format=png outputDir=./dist/ page='Page 1'",
-    "section": "node renderMustache.js outputDir=./dist, template=./jpg.template.md page='Page 1' section='Section 1'",
-    "frame": "node renderMustacheFrame.js outputDir=./build, template=./png.template.md frame='iPhone 14 & 15 Pro Max - 1'"
+    "print-section": "node renderMustache.js template=./template.jpg.md  outputDir=./dist page='Page 1' section='Section 1'",
+    "start": "node entrypoint.js format=png outputDir='./dist/Page 1/Section 1'",
+    "print-layer": "node renderMustacheLayer.js template=./template.png.md outputDir='./dist/Page 1/Section 1' layer='iPhone 14 & 15 Pro Max - 1'"
 
   },
-  "repository": "https://github.com/primer/figma-action",
+  "repository": "https://github.com/kwiksher/figma-action/tree/dev",
   "bugs": {
-    "url": "https://github.com/primer/figma-action/issues"
+    "url": "https://github.com/kwiksher/figma-action/issues"
   },
   "keywords": [
     "github",

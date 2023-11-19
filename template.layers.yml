@@ -1,0 +1,6 @@
+page: Page 1
+section: Section 1
+layers:
+{{#children}}
+- {{name}}
+{{/children}}

@@ -9,7 +9,7 @@ const sanitize = require("sanitize-filename")
 
 const options = {
   format: 'jpg',
-  outputDir: './build/',
+  outputDir: './build',
   scale: '1'
 }
 
@@ -45,9 +45,9 @@ const fs   = require('fs');
 
 // Get document, or throw exception on error
 try {
-  const doc = yaml.load(fs.readFileSync(options.outputDir + '/frames.yml', 'utf8'));
+  const doc = yaml.load(fs.readFileSync(options.outputDir + '/layers.yml', 'utf8'));
   console.log(doc);
-  for(const target of doc.frames ){
+  for(const target of doc.layers ){
     exportFrame(target, doc);
   }
 } catch (e) {
@@ -55,7 +55,7 @@ try {
 }
 
 function exportFrame(target, doc){
-  let outputDir = options.outputDir + target;
+  let outputDir = options.outputDir + '/' + target;
   let frame_x = 0;
   let frame_y = 0;
   //

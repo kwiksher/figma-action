@@ -1,10 +1,13 @@
 const options = {
   page:"Page 1",
   section:"Section 1",
-  template: './jpg.template.md',
+  template: './template.jpg.md',
   outputDir: './dist',
 }
-for(const arg of process.argv.slice(4)) {
+
+const layersyml='./template.layers.yml'
+
+for(const arg of process.argv.slice(2)) {
   const [param, value] = arg.split('=')
   console.log(param, value)
   if(options[param]) {
@@ -23,7 +26,8 @@ const jsonData = JSON.parse(fs.readFileSync(data, 'utf8'));
 
 console.log(jsonData)
 jsonData.parent = jsonData.name
-
+//
+// For markdown output.Section.md
 // Read the Markdown template
 const template = fs.readFileSync(options.template, 'utf8');
 
@@ -33,3 +37,17 @@ const renderedMarkdown = Mustache.render(template, jsonData);
 console.log(renderedMarkdown)
 // Write the rendered Markdown to a file
 fs.writeFileSync(output, renderedMarkdown, 'utf8');
+
+// For layers.yml
+// Read the Markdown template
+const templateYml = fs.readFileSync(layersyml, 'utf8');
+const outputYml = options.outputDir + "/" + options.page + "/" + options.section + "/layers.yml"
+
+// Render the Markdown template with the JSON data
+let renderedYml = Mustache.render(templateYml, jsonData);
+
+renderedYml = renderedYml.replaceAll("&amp;", "&")
+
+console.log(renderedYml)
+// Write the rendered Markdown to a file
+fs.writeFileSync(outputYml, renderedYml, 'utf8');
