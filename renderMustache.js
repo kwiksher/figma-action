@@ -1,7 +1,7 @@
 const options = {
   page:"Page 1",
   section:"Section 1",
-  template: './template.jpg.md',
+  template: './template.section.md',
   outputDir: './dist',
 }
 

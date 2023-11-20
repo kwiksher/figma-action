@@ -12,7 +12,7 @@ const options = {
   outputDir: './dist/',
   page: 'Page 1'
 }
-for(const arg of process.argv.slice(3)) {
+for(const arg of process.argv.slice(2)) {
   const [param, value] = arg.split('=')
   if(options[param]) {
     options[param] = value

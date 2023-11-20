@@ -1,6 +1,6 @@
 const options = {
   layer:"Frame 1",
-  template: './template.png.md',
+  template: './template.layer.md',
   outputDir: './build',
 }
 for(const arg of process.argv.slice(2)) {
@@ -27,7 +27,9 @@ console.log(jsonData)
 const template = fs.readFileSync(options.template, 'utf8');
 
 // Render the Markdown template with the JSON data
-const renderedMarkdown = Mustache.render(template, {name:options.layer, data:jsonData});
+let renderedMarkdown = Mustache.render(template, {name:options.layer, data:jsonData});
+
+renderedMarkdown = renderedMarkdown.replaceAll("//", "/")
 
 console.log(renderedMarkdown)
 // Write the rendered Markdown to a file
